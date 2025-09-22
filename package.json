@@ -1,5 +1,5 @@
 {
-  "name": "stadtmeldung-prototyp",
+  "name": "stadtmeldung-saalekreis",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -11,13 +11,13 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-leaflet": "^4.2.1",
     "leaflet": "^1.9.4",
-    "recharts": "^2.12.5",
-    "lucide-react": "^0.441.0"
+    "react-leaflet": "^4.2.1",
+    "recharts": "^2.10.3",
+    "lucide-react": "^0.452.0"
   },
   "devDependencies": {
-    "vite": "^5.4.0",
-    "@vitejs/plugin-react": "^4.3.1"
+    "vite": "^5.0.8",
+    "@vitejs/plugin-react": "^4.2.0"
   }
 }

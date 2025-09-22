@@ -1,4 +1,8 @@
-import React from 'react';
-export const Card = ({ className='', children }) => <div className={`card ${className}`}>{children}</div>;
-export const CardContent = ({ className='', children }) => <div className={`card-content ${className}`}>{children}</div>;
-export default Card;
+import React from 'react'
+export function Card({ children, className='' }){
+  return <div className={`rounded-xl border border-gray-200 bg-white ${className}`}>{children}</div>
+}
+export function CardContent({ children, className='' }){
+  return <div className={className}>{children}</div>
+}
+export default Card

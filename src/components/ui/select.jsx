@@ -1,30 +1,38 @@
-import React from 'react';
+import React, { createContext, useContext } from 'react'
 
-export const Select = ({ value, onValueChange, children, className='' }) => {
-  // Extract all SelectItem elements found anywhere in children
-  const items = [];
-  const walk = (nodes) => {
-    React.Children.forEach(nodes, (child) => {
-      if (!child) return;
-      if (child.type && child.type.displayName === 'SelectItem') {
-        items.push(child);
-      } else if (child.props && child.props.children) {
-        walk(child.props.children);
-      }
-    });
-  };
-  walk(children);
+const Ctx = createContext(null)
+
+export function Select({ value, onValueChange, children }){
+  return <Ctx.Provider value={{value, onValueChange}}>{children}</Ctx.Provider>
+}
+export function SelectTrigger({ children, className='' }){
+  // simple wrapper (not interactive)
+  return <div className={`border border-gray-300 rounded px-3 py-2 text-sm bg-white ${className}`}>{children}</div>
+}
+export function SelectValue({ placeholder }){
+  const ctx = useContext(Ctx) || {}
+  return <span>{ctx.value || placeholder}</span>
+}
+export function SelectContent({ children }){
+  const ctx = useContext(Ctx) || {}
+  const items = React.Children.toArray(children).filter(Boolean)
   return (
-    <select className={`select ${className}`} value={value} onChange={(e)=>onValueChange && onValueChange(e.target.value)}>
-      <option value="" disabled hidden>{/* placeholder handled outside */}</option>
-      {items.map((item, idx) => <option key={idx} value={item.props.value}>{item.props.children}</option>)}
+    <select
+      value={ctx.value || ''}
+      onChange={e => ctx.onValueChange && ctx.onValueChange(e.target.value)}
+      className="border border-gray-300 rounded px-3 py-2 text-sm bg-white"
+    >
+      {/* inject a placeholder as empty option if none selected */}
+      {!ctx.value && <option value="">-- auswählen --</option>}
+      {items.map((child, i) => {
+        if(!child || !child.props) return null
+        return <option key={i} value={child.props.value}>{child.props.children}</option>
+      })}
     </select>
-  );
-};
-export const SelectTrigger = ({ children }) => null;
-export const SelectValue = ({ children }) => null;
-export const SelectContent = ({ children }) => <>{children}</>;
-export const SelectItem = ({ value, children }) => <option value={value}>{children}</option>;
-SelectItem.displayName = 'SelectItem';
-
-export default Select;
+  )
+}
+export function SelectItem({ children }){
+  // only used as a container in SelectContent mapping
+  return <>{children}</>
+}
+export default { Select, SelectTrigger, SelectValue, SelectContent, SelectItem }
